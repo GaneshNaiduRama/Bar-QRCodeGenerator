@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .input-box, .output-box {
+            width: 45%;
+            padding: 20px;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            background-color: #e3f2fd;
+            text-align: center;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+        }
+        .output-box img {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Barcode and QR Code Generator</h1>
+    <div class="container">
+        <div class="input-box">
+            <h2>Enter SKU Code/Location</h2>
+            <input type="text" id="skuInput" placeholder="e.g., A-01-B-7-1" oninput="generateCodes()">
+        </div>
+        <div class="output-box">
+            <h2>Generated Codes</h2>
+            <div id="barcodeOutput"></div>
+            <div id="qrcodeOutput"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function generateCodes() {
+            const input = document.getElementById("skuInput").value;
+            const barcodeOutput = document.getElementById("barcodeOutput");
+            const qrcodeOutput = document.getElementById("qrcodeOutput");
+
+            if (input.trim()) {
+                barcodeOutput.innerHTML = '<svg id="barcode"></svg>';
+                JsBarcode("#barcode", input, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2,
+                    height: 80,
+                    displayValue: true
+                });
+
+                QRCode.toCanvas(document.createElement("canvas"), input, function (error, canvas) {
+                    if (!error) {
+                        qrcodeOutput.innerHTML = "";
+                        qrcodeOutput.appendChild(canvas);
+                    }
+                });
+            } else {
+                barcodeOutput.innerHTML = "";
+                qrcodeOutput.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>

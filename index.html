@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code & Barcode Generator</title>
+    <!-- QR Code Library -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <!-- JsBarcode Library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e7dff, #7a1ae7);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Main Container */
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Stylish Input Box */
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            margin: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        /* Input Box Hover & Focus Effect */
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+
+        input[type="text"]:hover {
+            border-color: #4CAF50;
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Stylish Boxes for QR & Barcode */
+        .output-box {
+            background: #f0f4f7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #qrcode {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        svg {
+            width: 100%;
+            height: 80px;
+            margin-top: 20px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            svg {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>QR Code & Barcode Generator</h1>
+
+        <!-- Single Input Box -->
+        <div class="input-box">
+            <input type="text" id="inputData" placeholder="Enter SKU/Location/Code" oninput="generateCodes()">
+        </div>
+
+        <!-- Generate Button -->
+        <button onclick="generateCodes()">Generate Codes</button>
+
+        <!-- QR & Barcode Output Boxes -->
+        <div class="output-box">
+            <h3>QR Code</h3>
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="output-box">
+            <h3>Barcode</h3>
+            <svg id="barcode"></svg>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>About Me | Developed by <a href="https://www.linkedin.com/in/ganeshlpa/" target="_blank">Ganesh LPA</a></p>
+    </footer>
+
+    <script>
+        // Function to generate QR Code and Barcode for the input data
+        function generateCodes() {
+            const inputData = document.getElementById('inputData').value.trim();
+
+            // Clear previous codes
+            document.getElementById('qrcode').innerHTML = '';
+            document.getElementById('barcode').innerHTML = '';
+
+            // If input is not empty, generate QR code and barcode
+            if (inputData !== '') {
+                // Generate QR Code
+                new QRCode(document.getElementById("qrcode"), {
+                    text: inputData,
+                    width: 128,
+                    height: 128,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                // Generate Barcode
+                JsBarcode("#barcode", inputData, {
+                    format: "CODE128", // You can change the format here if needed
+                    lineColor: "#000000",
+                    width: 2,
+                    height: 80,
+                    displayValue: true
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
+
